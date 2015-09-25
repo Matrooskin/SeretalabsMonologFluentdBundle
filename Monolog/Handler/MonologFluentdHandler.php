@@ -129,8 +129,9 @@ class MonologFluentdHandler extends AbstractProcessingHandler
 		$record['severity'] = $record['level_name'];
 		unset($record['level_name']);
 		unset($record['level']);
-		$record['details'] = $record['context'];
+		$record['details'] = json_encode($record['context']);
 		unset($record['context']);
+		$record['extra'] = json_encode($record['extra']);
 
 		$this->logger->post($tag, $record);
 	}
