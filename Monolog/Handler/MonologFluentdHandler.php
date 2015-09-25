@@ -124,10 +124,15 @@ class MonologFluentdHandler extends AbstractProcessingHandler
 		}
 		$tag = $tag . '.' . $this->env;
 
-		$data = $record;
-		$data['level'] = Logger::getLevelName($record['level']);
+		unset($record['datetime']);
+		unset($record['formatted']);
+		$record['severity'] = $record['level_name'];
+		unset($record['level_name']);
+		unset($record['level']);
+		$record['details'] = $record['context'];
+		unset($record['context']);
 
-		$this->logger->post($tag, $data);
+		$this->logger->post($tag, $record);
 	}
 
 	/**
